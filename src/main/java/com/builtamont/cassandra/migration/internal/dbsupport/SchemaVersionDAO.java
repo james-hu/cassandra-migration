@@ -64,7 +64,8 @@ public class SchemaVersionDAO {
 
         // If running on a single host, don't force ConsistencyLevel.ALL
         boolean isClustered = session.getCluster().getMetadata().getAllHosts().size() > 1;
-        this.consistencyLevel = isClustered ? ConsistencyLevel.ALL : ConsistencyLevel.ONE;
+        this.consistencyLevel = keyspaceConfig.getConsistencyLevel() == null ?
+                (isClustered ? ConsistencyLevel.ALL : ConsistencyLevel.ONE) : keyspaceConfig.getConsistencyLevel();
     }
 
     public String getTableName() {
